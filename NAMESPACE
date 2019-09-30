@@ -1,0 +1,6 @@
+useDynLib(GroupSortFuse)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+importFrom("graphics", "axis", "matplot", "par", "title")
+importFrom("stats", "cov", "dist", "dmultinom", "dnorm", "quantile", "rmultinom")
+
