@@ -14,4 +14,6 @@ library(devtools)
 devtools::install_github("tmanole/GroupSortFuse")
 ```
 
-
+# Examples
+Usage examples are available via the `example` command in R. For example, 
+`example(multinomialOrder)` provides an example of the GSF for multinomial mixture models.
