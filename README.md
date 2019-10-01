@@ -9,11 +9,33 @@ This package continues to be under development, and has only been tested on Ubun
 
 # Installation
 This package may be installed as follows, using the `devtools` R package:
-```{r}
+```r
 library(devtools)
 devtools::install_github("tmanole/GroupSortFuse")
 ```
 
 # Examples
-Usage examples are available via the `example` command in R. For example, 
-`example(multinomialOrder)` provides an example of the GSF for multinomial mixture models.
+We provide a usage example for Gaussian mixtures in location, with unknown but common covariance matrix, based on the Old Faithful Geyser dataset [1]. 
+
+```r
+library(GroupSortFuse)
+
+data(faithful) 
+set.seed(1) 
+out <- normalLocOrder(faithful, K=10, lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA", a=2, maxPgd=200, maxMem=500, verbose=FALSE) 
+```
+
+
+```r
+plot(out, gg=FALSE)
+```
+Visuals are also available using `ggplot2`. To install this package, run `install.packages("ggplot2")`. 
+
+```{r}
+plot(out, gg=TRUE)
+```
+
+
+# References 
+[1] Azzalini, A. and Bowman, A. W. (1990). A look at some data on the
+Old Faithful geyser. Applied Statistics 39, 357-365.
