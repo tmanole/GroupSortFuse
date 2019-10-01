@@ -57,27 +57,28 @@ The following is a list of additional control parameters.
   \item{\code{C}}{Tuning parameter for penalizing the mixing proportions.}
   \item{\code{a}}{Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
   \item{\code{convMem}}{Convergence criterion for the modified EM algorithm.}
-  \item{\code{convPgd}}{Convergence criterion for the proximal gradient descent algorithm.}}
-  \item{\code{maxMem}}   {Maximum number of iterations of the modified EM algorithm.}
-  \item{\code{maxPgd}}   {Maximum number of iterations of the proximal gradient descent algorithm.}
-  \item{\code{verbose}}  {If \code{TRUE}, print updates while the function is running.}
+  \item{\code{convPgd}}{Convergence criterion for the proximal gradient descent algorithm.}
+  \item{\code{maxMem}}{Maximum number of iterations of the modified EM algorithm.}
+  \item{\code{maxPgd}}{Maximum number of iterations of the proximal gradient descent algorithm.}
+  \item{\code{verbose}}{If \code{TRUE}, print updates while the function is running.}}
 }
 \examples{
  # Example 1: Seeds Data.
    data(seeds) 
    y <- cbind(seeds[,2], seeds[,6])
-   out <- normalLocOrder(y, K=12, lambdas=seq(0.1, 2.35, 0.25), maxPgd=30, maxMem=1000)
-   plot(out, eta=TRUE)
-   bicTuning(y, out, eta=FALSE)
+   set.seed(1)
+   out <- normalLocOrder(y, K=12, lambdas=seq(0.1, 1.7, 0.3), maxPgd=200, maxMem=500)
+   tuning <- bicTuning(y, out)
+   plot(out, gg=FALSE, eta=TRUE, vlines=TRUE, opt=tuning$result$lambda)
   
  # Example 2: Old Faithful Data.
    data(faithful)
    set.seed(1)
    out <- normalLocOrder(faithful, K=10, 
-             lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0), penalty="MCP-LLA", a=2)
-   plot(out)
-   bicTuning(faithful, out)
+             lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA", a=2, maxPgd=200, maxMem=500)
 
+   # Requires ggplot2.
+   plot(out, gg=TRUE, eta=FALSE)
 }
 \references{
 Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 

@@ -22,7 +22,7 @@ plot with all coefficients is produced otherwise.}
 
 \item{opt}{Optimal tuning parameter value. If not \code{NULL}, a vertical red line is drawn at this point.}
 
-\item{sqrtScale}{\cote{TRUE} if lambda values are to be plotted on the square root scale, \code{FALSE} otherwise.}
+\item{sqrtScale}{\code{TRUE} if lambda values are to be plotted on the square root scale, \code{FALSE} otherwise.}
 
 \item{...}{Additional Base R plotting parameters.}
 }

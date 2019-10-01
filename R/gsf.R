@@ -41,10 +41,11 @@
 #'   \item{\code{C}}{Tuning parameter for penalizing the mixing proportions.}
 #'   \item{\code{a}}{Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
 #'   \item{\code{convMem}}{Convergence criterion for the modified EM algorithm.}
-#'   \item{\code{convPgd}}{Convergence criterion for the proximal gradient descent algorithm.}}
-#'   \item{\code{maxMem}}   {Maximum number of iterations of the modified EM algorithm.}
-#'   \item{\code{maxPgd}}   {Maximum number of iterations of the proximal gradient descent algorithm.}
-#'   \item{\code{verbose}}  {If \code{TRUE}, print updates while the function is running.}
+#'   \item{\code{convPgd}}{Convergence criterion for the proximal gradient descent algorithm.}
+#'   \item{\code{maxMem}}{Maximum number of iterations of the modified EM algorithm.}
+#'   \item{\code{maxPgd}}{Maximum number of iterations of the proximal gradient descent algorithm.}
+#'   \item{\code{verbose}}{If \code{TRUE}, print updates while the function is running.}}
+#' 
 #'
 #' @references 
 #'  Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
@@ -52,22 +53,24 @@
 #'
 #'  Benaglia, T., Chauveau, D., Hunter, D., Young, D. 2009. "mixtools: An R package for analyzing
 #'  finite mixture models". Journal of Statistical Software. 32(6): 1-29.
+#'
 #' @examples
 #'  # Example 1: Seeds Data.
 #'    data(seeds) 
 #'    y <- cbind(seeds[,2], seeds[,6])
-#'    out <- normalLocOrder(y, K=12, lambdas=seq(0.1, 2.35, 0.25), maxPgd=30, maxMem=1000)
-#'    plot(out, eta=TRUE)
-#'    bicTuning(y, out, eta=FALSE)
+#'    set.seed(1)
+#'    out <- normalLocOrder(y, K=12, lambdas=seq(0.1, 1.7, 0.3), maxPgd=200, maxMem=500)
+#'    tuning <- bicTuning(y, out)
+#'    plot(out, gg=FALSE, eta=TRUE, vlines=TRUE, opt=tuning$result$lambda)
 #'   
 #'  # Example 2: Old Faithful Data.
 #'    data(faithful)
 #'    set.seed(1)
 #'    out <- normalLocOrder(faithful, K=10, 
-#'              lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0), penalty="MCP-LLA", a=2)
-#'    plot(out)
-#'    bicTuning(faithful, out)
-#'
+#'              lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA", a=2, maxPgd=200, maxMem=500)
+#' 
+#'    # Requires ggplot2.
+#'    plot(out, gg=TRUE, eta=FALSE)
 normalLocOrder <- function (y, lambdas, K = NULL, sigma = NULL, arbSigma = TRUE, ...) {
   input <- list(...)
 
@@ -194,11 +197,11 @@ normalLocOrder <- function (y, lambdas, K = NULL, sigma = NULL, arbSigma = TRUE,
 #'   \item{\code{penalty}} {Choice of penalty, which may be \code{"SCAD"}, \code{"MCP"}, 
 #'                          \code{"SCAD-LLA"}, \code{"MCP-LLA"} or \code{"ADAPTIVE-LASSO"}. 
 #'                          Default is \code{"SCAD"}.}
-#'   \item{\code{a}}        {Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
 #'   \item{\code{mcmcIter}} {Number of iterations for the starting value algorithm described 
 #'                           by Grenier (2016).}
 #'   \item{\code{uBound}}   {Upper bound on the tuning parameter of the proximal gradient algorithm.}
 #'   \item{\code{C}}       {Tuning parameter for penalizing the mixing proportions.}
+#'   \item{\code{a}}        {Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
 #'   \item{\code{convMem}}  {Convergence criterion for the modified EM algorithm.}
 #'   \item{\code{convPgd}}    {Convergence criterion for the proximal gradient descent algorithm.}
 #'   \item{\code{maxMem}}   {Maximum number of iterations of the Modified EM algorithm.}
@@ -216,10 +219,10 @@ normalLocOrder <- function (y, lambdas, K = NULL, sigma = NULL, arbSigma = TRUE,
 #' @examples 
 #'  require(MM)
 #'  data(pollen)
-#'  out <- multinomialOrder(pollen, K=12, lambdas=seq(0, 1.6, 0.2))
-#'  plot(out)
-#'  bicTuning(pollen, out)
-#'
+#'  set.seed(1)
+#'  out <- multinomialOrder(pollen, K=12, lambdas=seq(0.1, 1.6, 0.2))
+#'  tuning <- bicTuning(pollen, out)
+#'  plot(out, eta=TRUE, gg=FALSE, opt=tuning$result$lambda)
 multinomialOrder <- function(y, lambdas, K = NULL, ...) {
   input <- list(...)
 
@@ -355,22 +358,17 @@ multinomialOrder <- function(y, lambdas, K = NULL, ...) {
 #' @examples 
 #'  data(notices)
 #'
-#'  # Run the GSF with the MCP penalty.
-#'  set.seed(1)
-#'  out <- poissonOrder(notices, lambdas=c(0, .001, .005, .01, .1, .5, 1, 2, 5), 
-#'                      K=12, uBound=0.01, penalty="MCP")
-#'  plot(out, eta=FALSE)
-#'
 #'  # Run the GSF with the Adaptive Lasso penalty.
 #'  set.seed(1)
 #'  out <- poissonOrder(notices, lambdas=c(0, .001, .01, .5, 1, 2), 
-#'                      K=12, penalty="ADAPTIVE-LASSO")
+#'                      K=12, penalty="ADAPTIVE-LASSO", maxMem=1000)
+#'  # Requires ggplot2.
 #'  plot(out, eta=FALSE)
 #' 
 #'  # Run the GSF with the SCAD penalty.
 #'  set.seed(1)
 #'  out <- poissonOrder(notices, lambdas=c(.00005, .001, .005, .01, .1, .5, 1, 2, 5), 
-#'                      K=12, uBound=0.01, penalty="SCAD")
+#'                      K=12, uBound=0.01, penalty="SCAD", maxMem=1000)
 #'  plot(out, eta=FALSE)
 #'
 #'  # Select a tuning parameter using the BIC. 
@@ -498,7 +496,6 @@ poissonOrder <- function (y, lambdas, K = NULL, ...) {
 #' @references 
 #'  Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
 #'  via the Group-Sort-Fuse Procedure".
-#'
 exponentialOrder <- function (y, lambdas, K = NULL, theta, ...) {
   input <- list(...)
 
@@ -597,16 +594,12 @@ exponentialOrder <- function (y, lambdas, K = NULL, theta, ...) {
 #'         orders of the estimates.
 #'
 #' @examples 
-#'  data(faithful)
-#'  out <- normalLocOrder(faithful, K=12, 
-#'                        lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0), penalty="MCP", a=2)
-#'  plot(out)
-#'  bicTuning(faithful, out)
-#'
-#' @references 
-#'  Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
-#'  via the Group-Sort-Fuse Procedure".
-#'
+#'  require(MM)
+#'  data(pollen)
+#'  set.seed(1)
+#'  out <- multinomialOrder(pollen, K=12, lambdas=seq(0.1, 1.6, 0.2))
+#'  tuning <- bicTuning(pollen, out)
+#'  plot(out, eta=TRUE, gg=FALSE, opt=tuning$result$lambda)
 bicTuning <- function(y, result) {
   if (is.vector(y)) {
     n <- length(y)
@@ -730,7 +723,7 @@ bicTuning <- function(y, result) {
 #'               \code{FALSE} otherwise.
 #' @param points If \code{TRUE}, points are plotted along the lines, and are not plotted otherwise.
 #' @param opt Optimal tuning parameter value. If not \code{NULL}, a vertical red line is drawn at this point.
-#' @param sqrtScale \cote{TRUE} if lambda values are to be plotted on the square root scale, \code{FALSE} otherwise.
+#' @param sqrtScale \code{TRUE} if lambda values are to be plotted on the square root scale, \code{FALSE} otherwise.
 #' @param ... Additional Base R plotting parameters.
 #'
 #' @return Returns one or more plots depending on the value of \code{eta}.
@@ -745,8 +738,6 @@ bicTuning <- function(y, result) {
 #' @references 
 #'  Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
 #'  via the Group-Sort-Fuse Procedure".
-#'
-#' @export
 plot.gsf <- function (x, gg=FALSE, eta=TRUE, vlines=TRUE, points=FALSE, opt=NULL, sqrtScale=FALSE, ...) {
   result <- x
   l <- length(result)
@@ -786,7 +777,9 @@ plot.gsf <- function (x, gg=FALSE, eta=TRUE, vlines=TRUE, points=FALSE, opt=NULL
 
     mat <- matrix(NA, L, K-1)
     for (i in 1:L) {
-      th <- thetas[[i]][, order(thetas[[i]][1,])]
+      th <- as.matrix(thetas[[i]][, order(thetas[[i]][1,])]) 
+
+      if (ncol(th) == 1) th <- t(th)
 
       for (k in 1:(K-1)) {
         mat[i, k] <- sqrt(sum((th[, k+1] - th[, k])^2 ))

@@ -34,14 +34,10 @@ parameters \code{theta} and \code{pii} corresponding to the tuning parameter \eq
 of freedom of the estimates.
 }
 \examples{
- data(faithful)
- out <- normalLocOrder(faithful, K=12, 
-                       lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0), penalty="MCP", a=2)
- plot(out)
- bicTuning(faithful, out)
-
-}
-\references{
-Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
- via the Group-Sort-Fuse Procedure".
+ require(MM)
+ data(pollen)
+ set.seed(1)
+ out <- multinomialOrder(pollen, K=12, lambdas=seq(0.1, 1.6, 0.2))
+ tuning <- bicTuning(pollen, out)
+ plot(out, eta=TRUE, gg=FALSE, opt=tuning$result$lambda)
 }

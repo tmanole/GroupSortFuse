@@ -55,13 +55,14 @@ The following is a list of additional control parameters.
 
  # Run the GSF with the MCP penalty.
  set.seed(1)
- out <- poissonOrder(notices, lambdas=c(0, .001, .005, .01, .1, .5, 1, 2, 5), 
+ out <- poissonOrder(notices, lambdas=c(.001, .005, .01, .1, .5, 1, 2, 5), 
                      K=12, uBound=0.01, penalty="MCP")
+ # Requires ggplot2.
  plot(out, eta=FALSE)
 
  # Run the GSF with the Adaptive Lasso penalty.
  set.seed(1)
- out <- poissonOrder(notices, lambdas=c(0, .001, .01, .5, 1, 2), 
+ out <- poissonOrder(notices, lambdas=c(.001, .01, .5, 1, 2), 
                      K=12, penalty="ADAPTIVE-LASSO")
  plot(out, eta=FALSE)
 

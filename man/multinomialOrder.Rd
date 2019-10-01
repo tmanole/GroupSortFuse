@@ -46,11 +46,11 @@ The following is a list of additional control parameters.
   \item{\code{penalty}} {Choice of penalty, which may be \code{"SCAD"}, \code{"MCP"}, 
                          \code{"SCAD-LLA"}, \code{"MCP-LLA"} or \code{"ADAPTIVE-LASSO"}. 
                          Default is \code{"SCAD"}.}
-  \item{\code{a}}        {Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
   \item{\code{mcmcIter}} {Number of iterations for the starting value algorithm described 
                           by Grenier (2016).}
   \item{\code{uBound}}   {Upper bound on the tuning parameter of the proximal gradient algorithm.}
   \item{\code{C}}       {Tuning parameter for penalizing the mixing proportions.}
+  \item{\code{a}}        {Tuning parameter for the SCAD or MCP penalty. Default is \code{3.7}.}
   \item{\code{convMem}}  {Convergence criterion for the modified EM algorithm.}
   \item{\code{convPgd}}    {Convergence criterion for the proximal gradient descent algorithm.}
   \item{\code{maxMem}}   {Maximum number of iterations of the Modified EM algorithm.}
@@ -61,10 +61,10 @@ The following is a list of additional control parameters.
 \examples{
  require(MM)
  data(pollen)
- out <- multinomialOrder(pollen, K=12, lambdas=seq(0, 1.6, 0.2))
- plot(out)
- bicTuning(pollen, out)
-
+ set.seed(1)
+ out <- multinomialOrder(pollen, K=12, lambdas=seq(0.1, 1.6, 0.2))
+ tuning <- bicTuning(pollen, out)
+ plot(out, eta=TRUE, gg=FALSE, opt=tuning$result$lambda)
 }
 \references{
 Manole, T., Khalili, A. 2019. "Estimating the Number of Components in Finite Mixture Models 
