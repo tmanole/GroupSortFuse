@@ -8,7 +8,8 @@ Implementation of the Group-Sort-Fuse (GSF) procedure for estimating the number 
 This package continues to be under development, and has only been tested on Ubuntu 16.04 with R  3.4.4. This release should not be considered stable. 
 
 # Installation
-This package may be installed as follows, using the `devtools` R package:
+This package may be installed as follows, using the `devtools` R package. If you do not have the `devtools`
+package installed, you may install it using the command `install.package("devtools")`.
 ```r
 library(devtools)
 devtools::install_github("tmanole/GroupSortFuse")
@@ -33,6 +34,7 @@ caused by clumped sampling. We instead fit a multinomial mixture model using the
 with upper bound 12 on the number of components, and with a local linear approximation
 of the SCAD penalty, as follows.
 ```r
+require(GroupSortFuse)
 set.seed(1) 
 n   <- 73
 fitGsf <- multinomialOrder(pollen, K=12, lambdas=seq(0.4, log(n) * n^(-0.25), penalty="SCAD-LLA")
@@ -65,8 +67,16 @@ plot(fitGsf, gg=T, eta=T, vlines=T, opt=tuning$result$lambda)
 ```
 
 ## Example 2: Seeds Data
+We now consider the seeds data of [z],
+in which 7 geometric parameters were measured by X-Ray in 210 seeds, belonging to
+three different varieties. We fit the GSF on two of the gemoetric parameters of this data
+with an upper bound 12 on the number of components. 
 
-for Gaussian mixtures in location, with unknown but common covariance matrix, based on the Old Faithful Geyser dataset [1]. 
+```r
+set.seed(1) 
+out <- normalLocOrder(faithful, K=10, lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA")
+```
+
 
 ```r
 library(GroupSortFuse)
