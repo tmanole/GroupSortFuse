@@ -49,7 +49,7 @@ We can visualize the evolution of the mixture atom estimates as a function of th
 # install.packages("ggplot2")
 plot(fitGsf, gg=T, eta=F, vlines=T)
 ```
-![](images/pollenSCAD_gg_theta.pdf)
+![](images/pollenSCAD_gg_theta.png)
 
 
 For a plot in Base R graphics (as opposed to a `ggplot2` plot), simply run the above plotting function with parameter `gg=F`.
