@@ -49,7 +49,7 @@ We can visualize the evolution of the mixture atom estimates as a function of th
 # install.packages("ggplot2")
 plot(fitGsf, gg=T, eta=F, vlines=T)
 ```
-![](images/pollenSCAD_gg_theta.png)
+![](images/pollenSCAD_gg_theta_no_opt.png)
 
 
 For a plot in Base R graphics (as opposed to a `ggplot2` plot), simply run the above plotting function with parameter `gg=F`.
@@ -61,11 +61,21 @@ tuning <- bicTuning(fitGsf, pollen)
 ```
 
 The selected tuning parameter is `tuning$result$lambda`, and the corresponding number of components is 
-`tuning$result$K`, which turns out to be xxx in this example. We can add this to the coefficient plots from before, as follows
+`tuning$result$K`, which turns out to be 3 in this example. We can add this to the coefficient plots from before, as follows
+
+```r
+plot(fitGsf, gg=T, eta=F, vlines=T, opt=tuning$result$lambda)
+```
+![](images/pollenSCAD_gg_theta.png)
+
+Als available is a one-dimensional visualization of the norm of the differences of the sorted, fitted, atoms.
 
 ```r
 plot(fitGsf, gg=T, eta=T, vlines=T, opt=tuning$result$lambda)
 ```
+
+![](images/pollenSCAD_gg_eta.png)
+
 
 ## Example 2: Seeds Data
 We now consider the seeds data of [z],
@@ -74,32 +84,27 @@ three different varieties. We fit the GSF on two of the gemoetric parameters of 
 with an upper bound 12 on the number of components. 
 
 ```r
-set.seed(1) 
-out <- normalLocOrder(faithful, K=10, lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA")
+y <- seeds[,c(2,6)]
+n <- nrow(y)
+
+set.seed(1)
+outMCP      <- normalLocOrder(y, K=12, lambdas=seq(0.1, n^(-0.25) * log(n), length.out=10), arbSigma=T, verbose=F, penalty="MCP-LLA")
+
+bicMCP  <- bicTuning(y, outMCP)
+
+plot(outMCP, gg=T, eta=F, vlines=T, points=T, opt=bicMCP$result$lambda)
 ```
 
+![](images/seedsMCP_gg_theta_trim.png)
+
+Furthermore, a one-dimensional visualization of the sorted atom difference norms is given as follows.
 
 ```r
-library(GroupSortFuse)
-
-data(faithful) 
-set.seed(1) 
-out <- normalLocOrder(faithful, K=10, lambdas=c(0.1, 0.25, 0.5, 0.75, 1.0, 2), penalty="MCP-LLA", a=2, maxPgd=200, maxMem=500, verbose=FALSE) 
+plot(outMCP, gg=T, eta=T, vlines=T, points=T, opt=bicMCP$result$lambda)
 ```
 
-
-```r
-plot(out, gg=FALSE)
-```
-Visuals are also available using `ggplot2`. To install this package, run `install.packages("ggplot2")`. 
-
-```{r}
-plot(out, gg=TRUE)
-```
-
-
+![](images/seedsMCP_gg_eta.png)
 
 
 # References 
-[1] Azzalini, A. and Bowman, A. W. (1990). A look at some data on the
-Old Faithful geyser. Applied Statistics 39, 357-365.
+[1] 
