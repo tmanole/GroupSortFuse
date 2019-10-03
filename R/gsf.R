@@ -1032,7 +1032,7 @@ plot.gsf <- function (x, gg=FALSE, eta=TRUE, vlines=TRUE, points=FALSE, opt=NULL
 
       # Draw points. 
       if (points) {
-        p <- p + ggplot2::geom_point(aes(color=X3))
+        p <- p + ggplot2::geom_point(ggplot2::aes(color=X3))
       }
 
       return(p)
