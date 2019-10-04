@@ -1,5 +1,5 @@
 # GroupSortFuse
-Implementation of the Group-Sort-Fuse (GSF) procedure for estimating the number of components in finite mixture models. Four families of mixture models are currently implemented:
+Implementation of the Group-Sort-Fuse (GSF) procedure in [2] for estimating the number of components in finite mixture models. Four families of mixture models are currently implemented:
  + `normalLocOrder`: Multidimensional Gaussian mixture models in location, with common but possibly unknown scale parameter;
  + `multinomialOrder`: Multinomial mixture models;
  + `poissonOrder`: Univariate Poisson mixture models;
@@ -16,10 +16,10 @@ devtools::install_github("tmanole/GroupSortFuse")
 ```
 
 # Examples
-We provide two examples which were considered in [xxx]. 
+We provide two examples which were considered in [2]. 
 
 ## Example 1: Pollen Data
-We consider the data analyzed by [y], aris-
+We consider the data analyzed by [3], aris-
 ing from the study of the Bellas Artes pollen core from the Valley of Mexico. The
 data consists of 100 counts on the frequency of occurrence of 4
 kinds of fossil pollen grains, at 73 different levels of a pollen core. 
@@ -78,7 +78,7 @@ plot(fitGsf, gg=T, eta=T, vlines=T, opt=tuning$result$lambda)
 
 
 ## Example 2: Seeds Data
-We now consider the seeds data of [z],
+We now consider the seeds data of [1],
 in which 7 geometric parameters were measured by X-Ray in 210 seeds, belonging to
 three different varieties. We fit the GSF on two of the gemoetric parameters of this data
 with an upper bound 12 on the number of components. 
@@ -107,4 +107,8 @@ plot(outMCP, gg=T, eta=T, vlines=T, points=T, opt=bicMCP$result$lambda)
 
 
 # References 
-[1] 
+[1] Charytanowicz, M., Niewczas, J., Kulczycki, P., Kowalski, P. A., Lukasik, S. and Zak, S. (2010. Complete Gradient Clustering Algorithm for Features Analysis of X-Ray Images. *Adv. Intell. Sof. Comput.* 69, 15-24.
+
+[2] Manole, T. and Khalili, A. (2019). Estimation of the Number of Components in Finite Mixture Models via the Group-Sort-Fuse Procedure. *Submitted.*
+
+[3] Mosimann, J. E. (1962). On the Compound Multinomial Distribution, the Multivariate Beta Distribution, and Correlations Among Proportions. *Biometrika* 49, 65-82.
