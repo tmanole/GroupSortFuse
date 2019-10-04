@@ -19,8 +19,7 @@ devtools::install_github("tmanole/GroupSortFuse")
 We provide two examples which were considered in [2]. 
 
 ## Example 1: Pollen Data
-We consider the data analyzed by [3], aris-
-ing from the study of the Bellas Artes pollen core from the Valley of Mexico. The
+We consider the data analyzed by [3], arising from the study of the Bellas Artes pollen core from the Valley of Mexico. The
 data consists of 100 counts on the frequency of occurrence of 4
 kinds of fossil pollen grains, at 73 different levels of a pollen core. 
 The data is available in the `MM` package, which can be installed
