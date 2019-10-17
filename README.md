@@ -108,6 +108,6 @@ plot(outMCP, gg=T, eta=T, vlines=T, points=T, opt=bicMCP$result$lambda)
 # References 
 [1] Charytanowicz, M., Niewczas, J., Kulczycki, P., Kowalski, P. A., Lukasik, S. and Zak, S. (2010. Complete Gradient Clustering Algorithm for Features Analysis of X-Ray Images. *Adv. Intell. Sof. Comput.* 69, 15-24.
 
-[2] Manole, T. and Khalili, A. (2019). Estimation of the Number of Components in Finite Mixture Models via the Group-Sort-Fuse Procedure. *Submitted.*
+[2] Manole, T. and Khalili, A. (2019). Estimating of the Number of Components in Finite Mixture Models via the Group-Sort-Fuse Procedure. *Submitted.*
 
 [3] Mosimann, J. E. (1962). On the Compound Multinomial Distribution, the Multivariate Beta Distribution, and Correlations Among Proportions. *Biometrika* 49, 65-82.
