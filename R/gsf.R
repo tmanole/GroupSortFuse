@@ -115,14 +115,14 @@ normalLocOrder <- function (y, lambdas, K = NULL, sigma = NULL, arbSigma = TRUE,
   lambdas <- sort(lambdas)
 
   if (!is.null(mu) && !is.null(pii)) {
-    if (is.null(input[["sigma"]])) sigma <- cov(y)
+    if (arbSigma) sigma <- cov(y)
 
     out <- .myEm(y, mu, sigma, pii, arbSigma, -1, 1, C, a,
                 .penCode(penalty), lambdas, epsilon, delta, maxMem, maxPgd, uBound, verbose, 0)
 
   } else if (!is.null(mu) && is.null(pii)) {
     K <- ncol(mu)    
-    if (is.null(input[["sigma"]])) sigma <- cov(y)
+    if (arbSigma) sigma <- cov(y)
 
     out <- .myEm(y, mu, sigma, rep(1.0/K, K), arbSigma, -1, 1, C, a,
                 .penCode(penalty), lambdas, epsilon, delta, maxMem, maxPgd, uBound, verbose, 0)
@@ -135,7 +135,7 @@ normalLocOrder <- function (y, lambdas, K = NULL, sigma = NULL, arbSigma = TRUE,
       K <- length(pii)
     }
 
-    if (is.null(input[["sigma"]])) sigma <- cov(y)
+    if (arbSigma) sigma <- cov(y)
 
     # Compute starting values.
     means <- apply(y, 1, mean)
